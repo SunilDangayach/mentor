@@ -14,12 +14,10 @@ public class SkillsTechnologiesEntity {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private int id;
 	
 	@NotBlank
 	private String skillname;
-	
-	//TOC
 	
 	@NotBlank
 	private String duration;
@@ -27,24 +25,21 @@ public class SkillsTechnologiesEntity {
 	@NotBlank
 	private String prerequites;
 	
-	@NotBlank
-	private Long price;
+	private long price;
 
-	
-
-	public Long getPrice() {
+	public long getPrice() {
 		return price;
 	}
 
-	public void setPrice(Long price) {
+	public void setPrice(long price) {
 		this.price = price;
 	}
 
-	public Long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
