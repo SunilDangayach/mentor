@@ -33,7 +33,7 @@ public class MentorSkillController {
 		return mentorSkills;
 	}
 
-	@PutMapping("/mskill/update/{mid}/{sid}")
+	@PutMapping("/mskill/{mid}/{sid}")
 	public ResponseEntity<MentorSkill> updateSkill(@PathVariable("mid") long mid, @PathVariable("sid") long sid,
 			@RequestBody MentorSkill mentorSkill) {
 		System.out.println("Update Mentor Skill with mentorId = " + mid + " and skillId = " + sid);

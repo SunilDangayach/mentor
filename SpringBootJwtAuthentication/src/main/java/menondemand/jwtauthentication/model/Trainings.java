@@ -10,7 +10,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import ibm.mentor.model.Mentor;
-import ibm.mentor.model.Skills;
+import ibm.mentor.model.SkillsTechnologiesEntity;
 import ibm.mentor.model.User;
 
 
@@ -32,7 +32,7 @@ public class Trainings {
 	
 	@ManyToOne
     @JoinColumn(name = "skills_id")
-	private Skills skills;
+	private SkillsTechnologiesEntity skills;
 	
 	@Enumerated
 	private TrainingStatus status;
@@ -77,11 +77,11 @@ public class Trainings {
 		this.mentor = mentor;
 	}
 
-	public Skills getSkills() {
+	public SkillsTechnologiesEntity getSkills() {
 		return skills;
 	}
 
-	public void setSkills(Skills skills) {
+	public void setSkills(SkillsTechnologiesEntity skills) {
 		this.skills = skills;
 	}
 

@@ -6,10 +6,8 @@ package ibm.mentor.model;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -50,11 +48,11 @@ public class Mentor {
     
     private double rating;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    @ManyToMany
     @JoinTable(name = "mentor_skills", 
     	joinColumns = @JoinColumn(name = "mentor_id"), 
     	inverseJoinColumns = @JoinColumn(name = "skill_id"))
-    private Set<Skills> skills = new HashSet<>();
+    private Set<SkillsTechnologiesEntity> skills = new HashSet<>();
 
     public Mentor() {}
 
@@ -66,12 +64,12 @@ public class Mentor {
         this.endTime = endTime;		
         this.fee = fee;
     }
-    
-	public Set<Skills> getSkills() {
+
+	public Set<SkillsTechnologiesEntity> getSkills() {
 		return skills;
 	}
 
-	public void setSkills(Set<Skills> skills) {
+	public void setSkills(Set<SkillsTechnologiesEntity> skills) {
 		this.skills = skills;
 	}
 

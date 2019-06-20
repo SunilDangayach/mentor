@@ -1,12 +1,17 @@
 package menondemand.jwtauthentication.controller;
 
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,9 +27,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import ibm.mentor.model.Mentor;
-import ibm.mentor.model.Skills;
+import ibm.mentor.model.SkillsTechnologiesEntity;
 import ibm.mentor.model.User;
 import menondemand.jwtauthentication.message.request.LoginForm;
 import menondemand.jwtauthentication.message.request.MentorSignUp;
@@ -35,7 +41,6 @@ import menondemand.jwtauthentication.model.Role;
 import menondemand.jwtauthentication.model.RoleName;
 import menondemand.jwtauthentication.repository.MentorRepository;
 import menondemand.jwtauthentication.repository.RoleRepository;
-import menondemand.jwtauthentication.repository.SkillsRepository;
 import menondemand.jwtauthentication.repository.UserRepository;
 import menondemand.jwtauthentication.security.jwt.JwtProvider;
 
@@ -54,8 +59,9 @@ public class AuthRestAPIs {
 	@Autowired
 	UserRepository userRepository;
 	
-	@Autowired
-	SkillsRepository skillsRepository;
+	/*
+	 * @Autowired SkillsRepository skillsRepository;
+	 */
 	
 	@Autowired
 	MentorRepository mentorRepository;
@@ -69,6 +75,12 @@ public class AuthRestAPIs {
 	@Autowired
 	JwtProvider jwtProvider;
 
+	@Autowired
+	RestTemplate restTemplate;
+	
+	@Value("${skillrepo.url}")
+	public String skillRepoUrl;
+	
 	@PostMapping("/signin")
 	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginForm loginRequest) {
 
@@ -160,13 +172,20 @@ public class AuthRestAPIs {
 								signUpRequest.getFee());
 
 		Set<String> strSkills = signUpRequest.getSkills();
-		Set<Skills> skills = new HashSet<>();
+		Set<SkillsTechnologiesEntity> skills;
 		
-		strSkills.forEach(skill -> {
-			Skills mentorSkill = skillsRepository.findByName(skill).orElseGet(() -> skillsRepository.save(new Skills(skill)));
-			skills.add(mentorSkill);
-		});
 
+	    
+	    skills = strSkills.stream().map(skill->{
+			ResponseEntity<SkillsTechnologiesEntity> existingSkill = restTemplate.getForEntity(skillRepoUrl+"/v1/searchskill/"+skill, SkillsTechnologiesEntity.class);
+			if(existingSkill.getBody()!=null) {
+				return existingSkill.getBody();
+			}else {
+			    HttpEntity<SkillsTechnologiesEntity> request = new HttpEntity<>(new SkillsTechnologiesEntity(skill));
+		    	return restTemplate.postForEntity(skillRepoUrl+"/v1/createskill", request, SkillsTechnologiesEntity.class).getBody();
+			}
+	    }).collect(Collectors.toSet());
+	   
 		mentor.setSkills(skills);
 		mentorRepository.save(mentor);
 		
@@ -184,7 +203,7 @@ public class AuthRestAPIs {
 		String from = "mentorservice22@gmail.com";
 		String to = signUpRequest.getLinkedin();
 		String subject = "Please Verify your Email";
-		String body = "Click on link below to verify your account \n http://localhost:8080/api/auth/user?ccode="+confirmCode+"&username="+signUpRequest.getUsername();
+		String body = "Click on link below to verify your account \n http://localhost:8080/v1/api/auth/user?ccode="+confirmCode+"&username="+signUpRequest.getUsername();
 		
 		mailSender.sendMail(from, to, subject, body);
 			

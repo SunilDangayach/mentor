@@ -4,9 +4,11 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.iiht.mentor.trainings.model.Trainings;
 import com.iiht.mentor.trainings.repositorydao.TrainingsRepositoryDao;
 
 @RestController
@@ -15,6 +17,8 @@ public class TrainingsController {
 	
 	@Autowired
 	TrainingsRepositoryDao trainingsRepositoryDao;
+	
+	
 	
 	@GetMapping("/TrainingDetails")
 	public List<TrainingsRepositoryDao> getTrainingDetails(){
@@ -35,8 +39,8 @@ public class TrainingsController {
 	}
 	
 	@GetMapping("/TrainingCreate")
-	public List<TrainingsRepositoryDao> createTraining(){
-		return null;//TODO
+	public Trainings createTraining(@RequestBody Trainings training){
+		return trainingsRepositoryDao.save(training);
 		
 		
 	}

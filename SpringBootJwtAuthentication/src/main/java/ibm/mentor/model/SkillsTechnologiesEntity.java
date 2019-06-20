@@ -1,4 +1,4 @@
-package com.iiht.mentor.skills.technologies.model;
+package ibm.mentor.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

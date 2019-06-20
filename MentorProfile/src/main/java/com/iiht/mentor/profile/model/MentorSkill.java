@@ -15,18 +15,15 @@ public class MentorSkill {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private long id;
 
-	@NotBlank
-	private Long mid;
+	private long mid;
 
-	@NotBlank
-	private Long sid;
+	private long sid;
 
 	private String self_rating;
 
-	@NotBlank
-	private Integer years_of_exp;
+	private int years_of_exp;
 
 	@NotBlank
 	private String trainings_delivered;

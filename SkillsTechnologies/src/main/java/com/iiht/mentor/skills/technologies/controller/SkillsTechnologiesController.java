@@ -6,8 +6,6 @@ package com.iiht.mentor.skills.technologies.controller;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.websocket.server.PathParam;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,9 +37,8 @@ public class SkillsTechnologiesController {
 	}
 	
 	@GetMapping("/searchskill/{skillName}")
-	public List<SkillsTechnologiesEntity> searchSkills(@PathVariable(value = "skillName") String skillName){
-		return getAllSkills().stream().filter(skill->skill.getSkillname().contains(skillName))
-				.map(skill->skill).collect(Collectors.toList());
+	public SkillsTechnologiesEntity searchSkills(@PathVariable(value = "skillName") String skillName){
+		return getAllSkills().stream().filter(skill -> skill.getSkillname().equalsIgnoreCase(skillName)).findAny().orElse(null);
 	}
 	
 	@PostMapping("/createskills")
