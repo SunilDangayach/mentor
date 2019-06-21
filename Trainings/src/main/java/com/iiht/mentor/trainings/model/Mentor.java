@@ -4,9 +4,7 @@ package com.iiht.mentor.trainings.model;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -21,7 +19,7 @@ public class Mentor {
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
     private String username;
     
@@ -39,7 +37,7 @@ public class Mentor {
     
     private int endTime;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    @ManyToMany
     @JoinTable(name = "mentor_skills", 
     	joinColumns = @JoinColumn(name = "mentor_id"), 
     	inverseJoinColumns = @JoinColumn(name = "skill_id"))
@@ -64,11 +62,11 @@ public class Mentor {
 		this.skills = skills;
 	}
 
-	public Long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
