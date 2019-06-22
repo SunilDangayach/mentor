@@ -42,7 +42,7 @@
 	* Eureka		  -	http://localhost:9090/swagger-ui.html
 	* Zuul		  	  -	http://localhost:8989/swagger-ui.html
 	
-## 
+## Consideration
 1. Using jwt authentication mechanism.
 2. using microservices archietecture
 
