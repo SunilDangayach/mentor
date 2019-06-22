@@ -44,5 +44,5 @@
 	
 ## Consideration
 1. Using jwt authentication mechanism.
-2. using microservices archietecture
+2. Using microservices archietecture
 
