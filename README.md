@@ -29,7 +29,7 @@
 	* cd to each folder
 	* create image - docker build -t <image_name>:v1
     * cd to docker/dev folder
-	* execute 'docker-compose up -d
+	* execute 'docker-compose up -d'
 	
 ## Usage 
 1. Swagger UI ( this allow to test all api methods using the browser )
