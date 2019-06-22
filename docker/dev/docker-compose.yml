@@ -24,13 +24,13 @@ services:
   ports:
   - "8989:8989"
   
- oneclickui:
-  image: oneclickui/ui
-  container_name: oneclickui
+ authentication:
+  image: authentication
+  container_name: authentication
   ports:
   - "8080:8080"
   volumes:
-  - /logs/mentorprofile/:/logs
+  - /logs/authentication/:/logs
   environment:
   - MYSQL_URL=jdbc:mysql://mysql:3306/learner_portal?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
   - FLOW_FILE_PATH=/logs/
