@@ -109,6 +109,7 @@ public class MentorSkillController {
 				if(availableDate.after(calender.getStart_date())) {
 					return mentorRepo.findById(mentorSkill.getMid()).get();
 				}
+				return null;
 				
 			}).collect(Collectors.toList());
 			
