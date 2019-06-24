@@ -56,11 +56,7 @@ public class AuthRestAPIs {
 
 	@Autowired
 	UserRepository userRepository;
-	
-	/*
-	 * @Autowired SkillsRepository skillsRepository;
-	 */
-	
+		
 	@Autowired
 	MentorRepository mentorRepository;
 

@@ -1,6 +1,5 @@
 package com.iiht.mentor.profile.controller;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -8,6 +7,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -47,12 +47,9 @@ public class MentorSkillController {
 	@Autowired
 	RestTemplate restTemplate;
 	
-	@GetMapping("/mentorSkills/{mentorId}")
+	@GetMapping("/mentorSkills/mentor/{mentorId}")
 	public List<MentorSkill> getMentorSkills(@PathVariable("mentorId") int mentorId) {
-
-		List<MentorSkill> mentorSkills = new ArrayList<>();
-		mentorSkillRepositoryDao.findById(mentorId);
-		return mentorSkills;
+		return 	mentorSkillRepositoryDao.findByMid(mentorId);
 	}
 
 	@PutMapping("/mskill/{mid}/{sid}")
@@ -67,7 +64,9 @@ public class MentorSkillController {
 			_mentorSkills.setYears_of_exp(mentorSkill.getYears_of_exp());
 			_mentorSkills.setTrainings_delivered(mentorSkill.getTrainings_delivered());
 
+			mentorSkillRepositoryDao.save(_mentorSkills);
 			return new ResponseEntity<>(_mentorSkills, HttpStatus.OK);
+			
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
@@ -98,8 +97,8 @@ public class MentorSkillController {
 	}
 
 	@GetMapping("/mentorSkill/{skillName}/{mentorDate}")
-	public List<Mentor> getMentorSkillBySkilIdAndDate(@PathVariable(name = "skillId") String skillName
-			, @PathVariable(name="mentorDate") Date availableDate) {
+	public List<Mentor> getMentorSkillBySkilIdAndDate(@PathVariable(name = "skillName") String skillName
+			, @PathVariable(name="mentorDate") @DateTimeFormat(pattern="yyyy-MM-dd")  Date availableDate) {
 		List<Mentor> mentors = null;
 		ResponseEntity<Skills> existingSkill = restTemplate.getForEntity(skillRepoURL+"/v1/searchskill/"+skillName, Skills.class);
 		
@@ -107,10 +106,10 @@ public class MentorSkillController {
 			List<MentorSkill> mentorSkills = mentorSkillRepositoryDao.findBySid(existingSkill.getBody().getId());
 			mentors = mentorSkills.stream().map(mentorSkill->{
 				MentorCalender calender = calRepositoryDao.findByMid(mentorSkill.getMid());
-				if(availableDate.after(calender.getStart_date()) && availableDate.before(calender.getEnd_date())) {
+				if(availableDate.after(calender.getStart_date())) {
 					return mentorRepo.findById(mentorSkill.getMid()).get();
 				}
-				return null;
+				
 			}).collect(Collectors.toList());
 			
 		}

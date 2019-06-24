@@ -4,6 +4,7 @@ package com.iiht.mentor.trainings.model;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,6 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "mentor")
@@ -19,8 +22,11 @@ public class Mentor {
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="mentor_id")
     private int id;
 
+	@NotBlank
+    @Size(min=3, max = 50)
     private String username;
     
     private String linkedin;
@@ -36,6 +42,9 @@ public class Mentor {
     private int startTime;
     
     private int endTime;
+    
+    private double rating;
+
 
     @ManyToMany
     @JoinTable(name = "mentor_skills", 
@@ -132,5 +141,14 @@ public class Mentor {
 
 	public void setFee(double fee) {
 		this.fee = fee;
-	}    
+	}
+
+	public double getRating() {
+		return rating;
+	}
+
+	public void setRating(double rating) {
+		this.rating = rating;
+	} 
+
 }

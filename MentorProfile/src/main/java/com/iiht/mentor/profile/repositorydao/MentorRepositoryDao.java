@@ -1,6 +1,5 @@
 package com.iiht.mentor.profile.repositorydao;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,8 +12,6 @@ import com.iiht.mentor.profile.model.Mentor;
 public interface MentorRepositoryDao extends JpaRepository<Mentor, Integer> {
 	
 	Optional<Mentor> findByUsername(String username);
-    Boolean existsByUsername(String username);
-    List<Mentor> findBySkillsNameContainingAndStartTimeLessThanAndEndTimeGreaterThan(String name, int startTime, int endTime);
     
    
 	
